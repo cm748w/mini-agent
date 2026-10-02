@@ -1,0 +1,33 @@
+# 密钥（.env.example 不受影响,照常提交）
+.env
+
+# Python 缓存与临时文件
+__pycache__/
+*.pyc
+*.pyo
+*.tmp
+
+# 虚拟环境
+.venv/
+venv/
+env/
+test_env/
+
+# 测试 / 覆盖率 / 类型检查缓存
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# 运行产物
+data/
+logs/
+
+# 编辑器
+.vscode/
+.idea/
+
+# 操作系统垃圾
+.DS_Store
+Thumbs.db
+Desktop.ini
