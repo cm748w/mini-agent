@@ -1,18 +1,25 @@
-from agent.session import manager
+from agent.session import Session, manager
 from agent.runtime import agent_run
 
-def open_session(session) -> bool:
+"""
+REPL —— 交互式编程环境
+Read-Eval-Print Loop 读取-求值-打印 循环
+"""
+
+def open_session(session: Session) -> bool:
     """窗口内对话。返回 True = 回菜单; False = 退出整个程序"""
     print(f"\n已进入窗口「{session.name}」")
     print("输入 /back 返回菜单, 输入 /quit 退出程序\n")
 
     while True:
         try:
-            user_input = input(f"[{session.name}] > ").strip()
+            user_input = input(f"[{session.name}] > ").strip() 
+            # .strip() —— 去掉字符串开头和结尾的空白字符，返回一个新的字符串
         except EOFError:
-            print()
+            print() # 输出一个空行
             return True
         except KeyboardInterrupt:
+            # 终端按 Ctrl+C 时，Python 会抛出 KeyboardInterrupt 异常
             print("\n(/back 返回菜单, /quit 退出程序)")
             continue
 
@@ -23,7 +30,7 @@ def open_session(session) -> bool:
         if user_input == "/quit":
             return False
 
-        agent_run(user_input, session, manager)
+        agent_run(user_input, session)
         print()
 
 

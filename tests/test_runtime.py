@@ -7,7 +7,7 @@ from tests.helpers import fake_llm, make_response, make_tool_call
 
 
 @pytest.fixture
-def isolated(monkeypatch, tmp_path):
+def isolated(monkeypatch, tmp_path): # isolated —— 隔离的
     """隔离存储和 trace 文件,返回一个干净的 SessionManager"""
     monkeypatch.setattr(config, "SESSIONS_FILE", str(tmp_path / "sessions.json"))
     monkeypatch.setattr(Trace, "save", lambda self, path: None)
