@@ -9,9 +9,12 @@ TraceKind = Literal[
     "tool_call", "tool_call_error", "tool_result",
     "tool_error", "final", "error", "max_rounds", "fatal",
 ]
-
-# error API调用失败
-# fatal 未处理异常
+"""
+tool_call_error - 模型给出的参数解析失败
+tool_error - 工具执行失败 or 工具不存在
+error - API调用失败
+fatal - 出现了意料之外的异常
+"""
 
 @dataclass
 class TraceEvent:
