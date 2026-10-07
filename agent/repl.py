@@ -1,5 +1,5 @@
-from agent.session import Session, manager
-from agent.runtime import agent_run
+from .session import Session, manager
+from .runtime import agent_run
 
 """
 REPL —— 交互式编程环境
@@ -14,12 +14,12 @@ def open_session(session: Session) -> bool:
     while True:
         try:
             user_input = input(f"[{session.name}] > ").strip() 
-            # .strip() —— 去掉字符串开头和结尾的空白字符，返回一个新的字符串
+            # .strip() —— 去掉字符串开头和结尾的空白字符, 返回一个新的字符串
         except EOFError:
             print() # 输出一个空行
             return True
         except KeyboardInterrupt:
-            # 终端按 Ctrl+C 时，Python 会抛出 KeyboardInterrupt 异常
+            # 终端按 Ctrl+C 时, Python 会抛出 KeyboardInterrupt 异常
             print("\n(/back 返回菜单, /quit 退出程序)")
             continue
 

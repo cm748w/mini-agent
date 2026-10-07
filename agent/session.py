@@ -1,24 +1,30 @@
 import uuid, os, json
 from dataclasses import dataclass, field
 from datetime import datetime
+from .state import new_state, normalize_state
 
 SESSIONS_FILE = os.getenv("SESSIONS_FILE", "data/sessions.json")
 
 def now_str() -> str:
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
 
+# field: 每次实例化时 "动态生成" 默认值
 @dataclass
 class Session:
     id: str
     name: str
-    messages: list = field(default_factory=list) # 会话的全部对话历史
+    messages: list = field(default_factory=list)     # 最近对话窗口(Recent History)
+    state: dict = field(default_factory=new_state)   # 任务状态(目标/进度)(始终保留)
+    summary: str = ""                                # 历史摘要(默认为空)
     created_at: str = field(default_factory=now_str)
     updated_at: str = field(default_factory=now_str)
 
     def touch(self):
+        """**功能**: 更新 **session["updated_at"]** """
         self.updated_at = now_str()
 
 class SessionManager:
+    """管理会话"""
     def __init__(self):
         self._sessions: dict[str, Session] = {}
 
@@ -57,6 +63,8 @@ class SessionManager:
                     "created_at": s.created_at,
                     "updated_at": s.updated_at,
                     "messages": s.messages,
+                    "state": s.state,
+                    "summary": s.summary,
                 }
                 for s in self._sessions.values()
             ],
@@ -83,10 +91,13 @@ class SessionManager:
             sid = item.get("id")
             if not sid:
                 continue # 跳过损坏条目
+            raw_summary = item.get("summary")
             s = Session(
                 id=sid,
                 name=item.get("name", f"会话-{sid}"),
                 messages=item.get("messages", []),
+                state=normalize_state(item.get("state") or new_state()),
+                summary=raw_summary if isinstance(raw_summary, str) else "",
                 created_at=item.get("created_at", ""),
                 updated_at=item.get("updated_at", ""),
             )

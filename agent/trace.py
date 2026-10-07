@@ -25,6 +25,11 @@ class TraceEvent:
         default_factory=lambda: datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
     )
 
+"""
+追踪类: 
+    用于记录一次【Agent任务】或【请求】从开始到结束的完整执行过程, 
+  并把这些步骤串联成一条可查看、可协调、可分析的追踪记录。
+"""
 class Trace:
     def __init__(self):
         self.events: list[TraceEvent] = []
